@@ -107,11 +107,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTHENTICATION_BACKENDS = [
-#     'auth_user.backends.EmailBackend'
-# ]
+AUTHENTICATION_BACKENDS = [
+    'auth_user.backends.EmailBackend'
+]
 
-# AUTH_USER_MODEL = "auth_user.User" 
+AUTH_USER_MODEL = "auth_user.User" 
 
 
 # Internationalization
