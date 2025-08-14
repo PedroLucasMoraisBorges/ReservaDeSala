@@ -24,9 +24,12 @@ class Reserve(models.Model):
     status = models.IntegerField(choices=statusList)
 
     def __str__(self):
-        schedules = self.schedules.all().order_by('entry')
+        schedules = self.schedules.all().order_by('entryTime')
 
-        entry = schedules[0]
-        exit = schedules[-1]
+        entry = schedules.first()
+        exit = schedules.last()
+
+        if len(schedules) == 0:
+            return "Reserva Inválida"
 
         return f"{self.fkRoom.name} - {self.fkRoom.fkBuilding} de [{entry.entryTime}] às [{exit.exitTime}]"
