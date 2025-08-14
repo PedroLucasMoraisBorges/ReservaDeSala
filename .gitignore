@@ -1,0 +1,87 @@
+# # Arquivos de Ambiente Virtual
+# Ignora a pasta do ambiente virtual para não enviar todas as bibliotecas para o repositório.
+# O correto é usar um arquivo como 'requirements.txt'.
+venv/
+env/
+.venv/
+.env/
+virtualenv/
+*/activate.ps1
+
+# # Arquivos de Segredos e Configuração Local
+# NUNCA comite arquivos .env que contêm senhas de banco de dados, chaves de API, etc.
+*.env
+.env
+
+# # Django
+# ------------------------------------------------------------------------------
+# Ignora o banco de dados de desenvolvimento SQLite.
+db.sqlite3
+db.sqlite3-journal
+
+# Ignora os arquivos de mídia enviados pelos usuários.
+# A pasta /media/ é para conteúdo dinâmico.
+/media/
+
+# Ignora os arquivos estáticos coletados pelo 'collectstatic'.
+# A pasta de origem dos arquivos estáticos (ex: 'app/static/') DEVE ser versionada.
+# A pasta de destino ('STATIC_ROOT') não deve. No seu settings.py é a pasta 'assets'.
+/assets/
+/staticfiles/
+/static_root/
+
+# Ignora arquivos de tradução compilados.
+*.mo
+
+# # Python
+# ------------------------------------------------------------------------------
+# Arquivos de cache e bytecode do Python.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ovos e distribuições do Setuptools.
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+lib/
+lib64/
+include/
+share/
+
+# # Configurações de IDEs e Editores
+# ------------------------------------------------------------------------------
+# Visual Studio Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# # Arquivos de Log e Testes
+# ------------------------------------------------------------------------------
+*.log
+logs/
+*.log.*
+
+# Relatórios de cobertura de testes.
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# # Arquivos do Sistema Operacional
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db   
