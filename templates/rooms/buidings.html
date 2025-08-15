@@ -15,8 +15,20 @@
 </form>
 
 <div>
-    {% for build in buildings %}
-        <div>{{build}}</div>
+    {% for buildind in buildings %}
+        <div>
+            <div>{{buildind.info}}</div>
+            <a href="{% url 'deleteBuilging' id=buildind.info.id %}">Deletar</a>
+
+            <form method="post" action="{% url 'updateBuilding' id=buildind.info.id %}">
+                {% csrf_token %}
+                {% for field in buildind.form %}
+                    {{field}}
+                {% endfor %}
+
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}

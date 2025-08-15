@@ -2,7 +2,7 @@ from django import forms
 from auth_user.models import *
 from .models import *
 
-class CreateRoomForm(forms.ModelForm):
+class RoomForm(forms.ModelForm):
     name = forms.CharField(
         required=True,
         label="Nome da Sala",
@@ -32,7 +32,7 @@ class CreateRoomForm(forms.ModelForm):
         fields = ['name', 'fkBuilding', 'floor', 'idicatedLimit']
         model=Room
 
-class CreateBuildingForm(forms.ModelForm):
+class BuildingForm(forms.ModelForm):
     name = forms.CharField(
         required=True,
         label="Nome da Sala",
