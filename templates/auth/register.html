@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ptbr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>{{field}}</div>
+        {% endfor %}
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>

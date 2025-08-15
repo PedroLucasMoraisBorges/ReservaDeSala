@@ -1,0 +1,19 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div>
+    <a href="{% url 'registerRoom' %}">Cadastrar</a>
+</div>
+<div>
+    {% for room in rooms %}
+        <a href="{% url 'roomPage' id=room.id %}">{{room}}</a>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
