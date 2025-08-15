@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva da Sala: {{ room.name }}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* CSS para o Calendário e o Modal */
+        body {
+            background-color: #f8f9fa;
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        /* Torna os dias do calendário clicáveis */
+        .fc-daygrid-day {
+            cursor: pointer;
+        }
+        .fc-daygrid-day:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Estilos para os horários no modal */
+        #schedule-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .schedule-item {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            transition: background-color 0.2s;
+        }
+        .schedule-item.disabled {
+            background-color: #f8d7da; /* Vermelho claro para indicar reserva */
+            color: #842029;
+            text-decoration: line-through;
+        }
+        .schedule-item.disabled label {
+            cursor: not-allowed;
+        }
+        .schedule-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .room-info {
+            background-color: #e3f2fd;
+            border-left: 5px solid #0d6efd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-4">
+        <div class="p-4 mb-4 rounded room-info">
+            <h1 class="display-6">Sala: {{ room.name }}</h1>
+            <p class="lead"><strong>Prédio:</strong> {{ room.fkBuilding.name }} | <strong>Andar:</strong> {{ room.floor }}º</p>
+            <p><strong>Capacidade:</strong> até {{ room.idicatedLimit }} pessoas.</p>
+        </div>
+
+        <div id='calendar'></div>
+    </div>
+
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Reservar Horários para o dia <span id="selected-date"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reservationForm">
+                        <input type="hidden" id="date-to-reserve" name="date">
+                        <p>Selecione um ou mais horários disponíveis:</p>
+                        
+                        <div id="schedule-list"></div>
+                        <div id="form-error" class="alert alert-danger mt-3 d-none"></div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveReservationBtn">Salvar Reserva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ room.id|json_script:"room-id" }}
+    {{ schedules|json_script:"all-schedules" }}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/pt-br.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configura Day.js para português do Brasil
+            dayjs.locale('pt-br');
+
+            // 1. OBTENDO DADOS DO DJANGO
+            const roomId = JSON.parse(document.getElementById('room-id').textContent);
+            const allSchedules = JSON.parse(document.getElementById('all-schedules').textContent).map(item => item.fields);
+             // Os IDs vêm de fora do 'fields' no serializador padrão
+            JSON.parse(document.getElementById('all-schedules').textContent).forEach((item, index) => {
+                allSchedules[index].id = item.pk;
+            });
+
+
+            // 2. ELEMENTOS DO DOM
+            const calendarEl = document.getElementById('calendar');
+            const reservationModalEl = document.getElementById('reservationModal');
+            const reservationModal = new bootstrap.Modal(reservationModalEl);
+            const selectedDateEl = document.getElementById('selected-date');
+            const dateToReserveInput = document.getElementById('date-to-reserve');
+            const scheduleListContainer = document.getElementById('schedule-list');
+            const saveReservationBtn = document.getElementById('saveReservationBtn');
+            const formError = document.getElementById('form-error');
+
+            // 3. INICIALIZAÇÃO DO FULLCALENDAR
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'pt-br',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                dateClick: async function(info) {
+                    // Função executada ao clicar em um dia
+                    const clickedDate = info.dateStr; // Formato YYYY-MM-DD
+                    
+                    // Impede de clicar em dias passados
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    if (new Date(clickedDate) < today) {
+                        alert("Não é possível fazer reservas para datas passadas.");
+                        return;
+                    }
+
+                    selectedDateEl.textContent = dayjs(clickedDate).format('DD/MM/YYYY');
+                    dateToReserveInput.value = clickedDate;
+                    formError.classList.add('d-none'); // Esconde erros antigos
+
+                    try {
+                        // Faz uma chamada à API para buscar horários reservados
+                        const response = await fetch(`/api/room/${roomId}/reserved_schedules/?date=${clickedDate}`);
+                        if (!response.ok) throw new Error('Falha ao buscar horários.');
+                        
+                        const data = await response.json();
+                        const reservedIds = new Set(data.reserved_ids);
+
+                        // Limpa a lista de horários anterior
+                        scheduleListContainer.innerHTML = '';
+
+                        // Popula o modal com todos os horários, marcando os indisponíveis
+                        allSchedules.forEach(schedule => {
+                            const isReserved = reservedIds.has(schedule.id);
+                            
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'schedule-item form-check';
+                            if (isReserved) {
+                                itemDiv.classList.add('disabled');
+                            }
+                            
+                            const input = document.createElement('input');
+                            input.type = 'checkbox';
+                            input.className = 'form-check-input';
+                            input.value = schedule.id;
+                            input.id = `schedule-${schedule.id}`;
+                            input.name = 'schedules';
+                            input.disabled = isReserved;
+
+                            const label = document.createElement('label');
+                            label.className = 'form-check-label';
+                            label.setAttribute('for', `schedule-${schedule.id}`);
+                            label.textContent = `${schedule.entryTime.slice(0,5)} - ${schedule.exitTime.slice(0,5)}`;
+
+                            itemDiv.appendChild(input);
+                            itemDiv.appendChild(label);
+                            scheduleListContainer.appendChild(itemDiv);
+                        });
+
+                        // Abre o modal
+                        reservationModal.show();
+
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        alert('Não foi possível carregar os horários. Tente novamente.');
+                    }
+                }
+            });
+
+            calendar.render();
+
+            // 4. LÓGICA PARA SALVAR A RESERVA
+            saveReservationBtn.addEventListener('click', async function() {
+                const selectedCheckboxes = document.querySelectorAll('#reservationForm input[name="schedules"]:checked');
+                
+                if (selectedCheckboxes.length === 0) {
+                    formError.textContent = 'ERRO: Você deve selecionar pelo menos um horário.';
+                    formError.classList.remove('d-none');
+                    return;
+                }
+                
+                formError.classList.add('d-none');
+
+                const selectedScheduleIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+                const date = dateToReserveInput.value;
+                const csrfToken = getCookie('csrftoken'); // Função para pegar o token CSRF
+
+                const dataToSave = {
+                    room_id: roomId,
+                    date: date,
+                    schedule_ids: selectedScheduleIds
+                };
+
+                try {
+                    const response = await fetch(`/api/reserve/create/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken
+                        },
+                        body: JSON.stringify(dataToSave)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        alert(result.success);
+                        reservationModal.hide();
+                        // Idealmente, você pode adicionar um evento ao calendário aqui
+                        // ou simplesmente recarregar a página para ver a mudança
+                        window.location.reload(); 
+                    } else {
+                        formError.textContent = `ERRO: ${result.error || 'Não foi possível salvar a reserva.'}`;
+                        formError.classList.remove('d-none');
+                    }
+                } catch (error) {
+                    console.error('Erro ao salvar:', error);
+                    formError.textContent = 'Ocorreu um erro de conexão. Tente novamente.';
+                    formError.classList.remove('d-none');
+                }
+            });
+
+            // Função auxiliar para obter o CSRF token dos cookies
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+</body>
+</html>
