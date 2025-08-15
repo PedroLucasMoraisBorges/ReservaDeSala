@@ -4,7 +4,7 @@ from django.views import View
 from .forms import *
 from .utils import *
 
-# Create your views here.
+
 class Redirect(View):
     def get(self, request):
         user = request.user
@@ -16,11 +16,13 @@ class Redirect(View):
         elif user.is_staff:
             return redirect('registredRooms')
 
+
 class Logout(View):
     def get(self, request):
         logout(request)
         return redirect('/')
     
+
 class Login(View):
     def get(self, request):
         form = AuthenticationForm()
@@ -47,7 +49,7 @@ class Login(View):
 
         return render(request, 'auth/login.html', context)
 
-# Cadastro de manager
+
 class Register(View):
     def get(self, request):
         form = CustomUserCreationForm()

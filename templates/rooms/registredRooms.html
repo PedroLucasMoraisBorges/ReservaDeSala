@@ -10,7 +10,11 @@
 </div>
 <div>
     {% for room in rooms %}
-        <a href="{% url 'roomPage' id=room.id %}">{{room}}</a>
+        <div>
+            <p>{{room}}</p>
+            <a href="{% url 'roomPage' id=room.id %}">Abrir</a>
+            <a href="{% url 'deleteRoom' id=room.id %}">Deletar</a>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}
