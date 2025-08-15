@@ -1,0 +1,41 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div>
+    <p>Reservas ativas</p>
+    {% for reserve in userReserves.actives %}
+        <div>{{reserve}}</div>
+        <a href="{% url 'cancel_reserve' id=reserve.id %}">Cancelar</a>
+    {% endfor %}
+</div>
+
+<div>
+    <form>
+        <p>Pesquisar por salas</p>
+        <input type="text" name="name" placeholder="Nome da sala">
+        <input type="number" name="limit" placeholder="25">
+        <input type="number" name="floor">
+
+        <button type="submit">Buscar</button>
+    </form>
+</div>
+
+<div>
+    {% if hasSearch and rooms|length == 0 %}
+        <p>Nenhuma sala encontrada</p>
+    {% endif %}
+    {% for room in rooms %}
+        <div>
+            {{room}}
+            <a href="{% url 'room_detail' id=room.id %}">Ver Horários</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
