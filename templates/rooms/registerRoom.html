@@ -1,0 +1,25 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<a href="{% url 'buildings' %}">Prédios Cadastrados</a>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div>
+            {{field.label_tag}}
+            {{field}}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Register</button>
+</form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

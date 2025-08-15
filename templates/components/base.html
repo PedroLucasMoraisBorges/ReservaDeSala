@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'imgs/logo1.svg' %}" type="image/x-icon">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <div>
+        <a href="{% url 'logout' %}">Sair</a>
+    </div>
+    {% block body %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
