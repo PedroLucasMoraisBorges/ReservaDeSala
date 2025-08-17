@@ -7,4 +7,5 @@ urlpatterns = [
     path('login', Login.as_view(), name='login'),
     path('cadastro', Register.as_view(), name='register'),
     path('logout/', Logout.as_view(), name='logout'),
+    path('naoAutorizado/', ForbiddenView.as_view(), name='forbidden')
 ]
