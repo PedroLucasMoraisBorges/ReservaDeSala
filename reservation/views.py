@@ -4,10 +4,22 @@ from django.db.models import Q
 from rooms.models import *
 from .models import *
 from .utils import *
+from auth_user.decorators import *
 
 
 
-# Create your views here.
+import json
+from django.shortcuts import render, get_object_or_404
+from django.views import View
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.db import transaction
+from django.core import serializers # <-- IMPORTE O SERIALIZADOR
+
+from .models import Room, Schedule, Reserve, User
+
+@method_decorator([logged_user_required], name='dispatch')
 class UserReserves(View):
     def get(self, request):
         userReserves = getUserReserves(request.user)
@@ -24,22 +36,9 @@ class UserReserves(View):
 
         return render(request, 'reservations/userReserves.html', context)
 
-
-
-
-import json
-from django.shortcuts import render, get_object_or_404
-from django.views import View
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.db import transaction
-from django.core import serializers # <-- IMPORTE O SERIALIZADOR
-
-from .models import Room, Schedule, Reserve, User
-
-# View para renderizar a página principal da sala com o calendário (VERSÃO CORRIGIDA)
+@method_decorator([logged_user_required], name='dispatch')
 class RoomDetailView(View):
+    @logged_user_required
     def get(self, request, id):
         room = get_object_or_404(Room, id=id)
         
@@ -57,6 +56,7 @@ class RoomDetailView(View):
         return render(request, 'reservations/roomDetail.html', context)
 
 # API para obter os horários já reservados em um dia específico
+logged_user_required
 def get_reserved_schedules(request, room_id):
     if request.method == 'GET':
         date_str = request.GET.get('date')
@@ -78,7 +78,7 @@ def get_reserved_schedules(request, room_id):
 
 # API para criar uma nova reserva
 # Usamos @login_required para garantir que apenas usuários logados possam reservar
-@login_required
+logged_user_required
 def create_reservation(request):
     if request.method == 'POST':
         try:
@@ -127,7 +127,9 @@ def create_reservation(request):
 
     return JsonResponse({'error': 'Método inválido.'}, status=405)
 
+@method_decorator([logged_user_required], name='dispatch')
 class CacelReserve(View):
+    @logged_user_required
     def get(self, request, id):
         reservation = Reserve.objects.get(id=id)
         reservation.status = 1

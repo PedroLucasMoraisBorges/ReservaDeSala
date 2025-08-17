@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.views import View
 from .forms import *
 from .utils import *
+from .decorators import *
 
 
 class Redirect(View):
@@ -26,6 +27,7 @@ class Logout(View):
 class Login(View):
     def get(self, request):
         form = AuthenticationForm()
+        print(request.user)
 
         context = {
             'form' : form
@@ -79,3 +81,7 @@ class Register(View):
         }
 
         return render(request, 'auth/register.html', context)
+
+class ForbiddenView(View):
+    def get(self, request):
+        return render(request, "auth/forbidden.html")
