@@ -64,6 +64,7 @@ Antes de começar, certifique-se de que você tem as seguintes ferramentas insta
 ```bash
 git clone <URL_DO_SEU_REPOSITORIO>
 cd <NOME_DO_DIRETORIO>
+```
 
 
 **2. Configure as Variáveis de Ambiente**
@@ -81,6 +82,7 @@ DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=0000
 DATABASE_HOST=db
 DATABASE_PORT=5432
+```
 
 
 **3. Construa e Inicie os Contêineres**
@@ -88,6 +90,7 @@ Este comando irá construir as imagens Docker (se ainda não existirem) e inicia
 
 ```bash
 docker-compose up --build -d
+```
 
 O compose.override.yml garante que as migrações do banco de dados sejam aplicadas automaticamente na inicialização.
 
@@ -96,6 +99,7 @@ Para acessar a área administrativa do Django, crie uma conta de superusuário:
 
 ```bash
 docker-compose exec django-web python manage.py createsuperuser
+```
 
 Siga as instruções no terminal para definir o e-mail, nome e senha.
 
@@ -108,11 +112,13 @@ Após a configuração inicial, use os seguintes comandos na raiz do projeto par
 
 ```bash
 docker-compose up
+```
 
 - Para parar os serviços:
 
 ```bash
 docker-compose down
+```
 
 
 A aplicação estará acessível em http://localhost:8000.
@@ -122,20 +128,24 @@ Todos os comandos devem ser executados a partir da raiz do projeto.
 
 - **Executar Testes:**
 
-´´´bash
+```bash
 docker-compose exec django-web python manage.py test
+```
 
 - **Acessar o Shell do Django:**
 
 ```bash
 docker-compose exec django-web python manage.py shell
+```
 
 - **Acessar o Terminal (bash) do Contêiner Django:**
 
 ```bash
 docker-compose exec django-web /bin/bash
+```
 
 - **Visualizar os Logs em Tempo Real:**
 
 ```bash
 docker-compose logs -f
+```
