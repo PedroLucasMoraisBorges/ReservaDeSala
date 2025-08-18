@@ -9,13 +9,14 @@ from .decorators import *
 class Redirect(View):
     def get(self, request):
         user = request.user
-
         if not user.is_authenticated:
             return redirect('login')
         elif user.is_superuser:
             return redirect('registredRooms')
         elif user.is_staff:
             return redirect('registredRooms')
+        else:
+            return redirect('userReserves')
 
 
 class Logout(View):
@@ -27,7 +28,6 @@ class Logout(View):
 class Login(View):
     def get(self, request):
         form = AuthenticationForm()
-        print(request.user)
 
         context = {
             'form' : form
@@ -42,7 +42,7 @@ class Login(View):
         if form.is_valid():
             user = form.get_user()  
             login(request, user)
-            return redirect('/')
+            return redirect('redirect')
         
         context = {
             'errors' : errors,
@@ -67,13 +67,13 @@ class Register(View):
 
         errors = getErrors([form])
 
+
         if form.is_valid():
             user = form.save(commit=False)
-            user.type = 'G'
             user.save()
 
             login(request, user)
-            return redirect('/')
+            return redirect('redirect')
         
         context = {
             'form'   : form,

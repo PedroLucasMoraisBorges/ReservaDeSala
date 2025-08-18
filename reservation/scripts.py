@@ -8,5 +8,3 @@ for hour in range(7, 22):  # 7 até 21
     entry = time(hour, 0)
     exit = time(hour + 1, 0)
     Schedule.objects.create(entryTime=entry, exitTime=exit)
-
-print("Horários cadastrados com sucesso!")
