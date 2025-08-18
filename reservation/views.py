@@ -25,8 +25,6 @@ class UserReserves(View):
         userReserves = getUserReserves(request.user)
         search = searchRooms(request)
 
-        print(userReserves)
-
 
         context = {
             'userReserves' : userReserves,
@@ -101,7 +99,6 @@ def create_reservation(request):
             if existing_reservations:
                 return JsonResponse({'error': 'Conflito de horários. Um ou mais horários selecionados já foram reservados.'}, status=409)
 
-            # Usamos uma transação para garantir que a operação seja atômica
             with transaction.atomic():
                 room = Room.objects.get(id=room_id)
                 
@@ -122,7 +119,6 @@ def create_reservation(request):
             return JsonResponse({'error': 'JSON inválido.'}, status=400)
         except Exception as e:
             # Log do erro é uma boa prática
-            print(f"Erro ao criar reserva: {e}")
             return JsonResponse({'error': 'Ocorreu um erro interno.'}, status=500)
 
     return JsonResponse({'error': 'Método inválido.'}, status=405)

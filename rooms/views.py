@@ -120,6 +120,7 @@ class UpdateBuilding(View):
             form.save()
             return redirect('buildings')
 
+
         context = {
             'form' : BuildingForm(),
             'errors' : getErrors[form],
