@@ -2,24 +2,44 @@
 {% load static %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/registerRoom.css' %}">
 {% endblock %}
 
 {% block body %}
-<a href="{% url 'buildings' %}">Prédios Cadastrados</a>
+{% include 'components/headerAdmin.html' %}
+<div class="form-container">
+    <div class="form-header">
+        
+        <h2>Cadastro de Sala</h2>
+        <a href="{% url 'buildings' %}" class="link-secondary">Cadastrar Prédio</a>
+        <!-- Botão de voltar -->
+        
+    </div>
 
-<form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-        <div>
-            {{field.label_tag}}
-            {{field}}
+    <!-- Mensagem de sucesso -->
+    {% if success %}
+    <div class="success-message">
+        Sala cadastrada com sucesso!
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
-    {% endfor %}
-
-    <button type="submit">Register</button>
-</form>
+        {% endfor %}
+        <button type="submit" class="btn-submit">Cadastrar Sala</button>
+    </form>
 </div>
 {% endblock %}
-
-{% block scripts %}
-{% endblock %}
+trrx

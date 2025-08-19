@@ -1,0 +1,188 @@
+/* ===== Body ===== */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F5F7FA;
+    margin: 0;
+    padding: 0;
+    color: #1E3A8A;
+}
+
+/* ===== Reservas Ativas ===== */
+.active-reserves {
+    margin: 20px 50px;
+    background-color: #E0E7FF;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.active-reserves p {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.reserve-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.reserve-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.reserve-card a {
+    background-color: #F87171;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.reserve-card a:hover {
+    background-color: #DC2626;
+    transform: translateY(-2px);
+}
+
+/* ===== Formulário de Busca ===== */
+.search-form {
+    margin: 20px 50px;
+    background-color: #E0E7FF;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.search-form p {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.search-form input {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #D1D5DB;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    outline: none;
+    font-size: 1rem;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-form input:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+}
+
+.search-form button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2563EB;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.search-form button:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+
+/* ===== Cards de Salas ===== */
+.rooms-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    margin: 20px 50px;
+}
+
+.room-card {
+    background-color: #fff;
+    border-radius: 12px;
+    width: 250px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.room-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.room-card img.room-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.room-card .room-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.room-card .room-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1E3A8A;
+}
+
+.room-card .room-info p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.room-card a {
+    display: inline-block;
+    margin: 10px 15px 15px 15px;
+    background-color: #2563EB;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.room-card a:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+    .rooms-results {
+        justify-content: center;
+    }
+
+    .search-form input, .search-form button {
+        width: 100%;
+        margin-right: 0;
+    }
+}

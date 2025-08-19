@@ -1,0 +1,248 @@
+/* =============================== */
+/* Container do formulário */
+h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+hr {
+    border: 0;
+    height: 2px;
+    background-color: #2563EB;
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+.titleSection {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto 10px auto;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.form-container h2 {
+    color: #1E3A8A;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Inputs */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #D1D5DB;
+    background-color: #F3F4F6;
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+}
+
+/* Botões */
+.btn-submit, .btn-update, .btn-delete {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-submit, .btn-update {
+    background-color: #2563EB;
+    color: #fff;
+    width: 100%;
+}
+
+.btn-submit:hover, .btn-update:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background-color: #F87171;
+    color: #fff;
+    justify-content: center;
+}
+
+.btn-delete:hover {
+    background-color: #DC2626;
+    transform: translateY(-2px);
+}
+
+/* Lista de prédios */
+.building-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 30px auto;
+    max-width: 1000px;
+    justify-content: center;
+}
+
+/* Card do prédio */
+.building-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    padding: 20px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Informações do prédio */
+.building-info p {
+    font-weight: 600;
+    color: #1E3A8A;
+    font-size: 1.1rem;
+}
+
+/* Ações do prédio */
+.building-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Form de atualização */
+.update-form .form-group input {
+    padding: 8px;
+    font-size: 0.95rem;
+}
+
+/* =============================== */
+/* Modal de exclusão de prédio */
+.modal {
+    display: none; /* escondido por padrão */
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-content h3 {
+    font-size: 1.2rem;
+    color: #1E3A8A;
+    font-weight: 700;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #9CA3AF;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #1E3A8A;
+}
+
+/* Botões do modal */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.modal-actions .btn-confirm {
+    background-color: #F87171;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-actions .btn-confirm:hover {
+    background-color: #DC2626;
+    transform: translateY(-2px);
+}
+
+.modal-actions .btn-cancel {
+    background-color: #9CA3AF;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-actions .btn-cancel:hover {
+    background-color: #6B7280;
+    transform: translateY(-2px);
+}
+
+/* =============================== */
+/* Animação modal */
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsividade */
+@media (max-width: 500px) {
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-actions .btn-confirm,
+    .modal-actions .btn-cancel {
+        width: 100%;
+    }
+}

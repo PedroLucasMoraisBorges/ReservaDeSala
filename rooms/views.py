@@ -11,10 +11,19 @@ from django.utils.decorators import *
 @method_decorator([logged_user_required, staff_user_required], name='dispatch')
 class StaffRooms(View):
     def get(self, request):
-        rooms = Room.objects.filter()
+        rooms = Room.objects.all()
+
+        # Criar um dicionário com room + form
+        rooms_with_forms = []
+        for room in rooms:
+            form = RoomForm(instance=room)
+            rooms_with_forms.append({
+                'room': room,
+                'form': form
+            })
 
         context = {
-            'rooms' : rooms
+            'rooms_with_forms': rooms_with_forms
         }
 
         return render(request, 'rooms/registredRooms.html', context)
@@ -32,14 +41,18 @@ class RegisterRoom(View):
     
     def post(self, request):
         form = RoomForm(request.POST)
-
         if form.is_valid():
-            room = form.save()
-            return redirect('roomPage', id=room.id)
-        
+            form.save()
+            # Retorna à mesma página com mensagem de sucesso
+            context = {
+                'form': RoomForm(),
+                'success': True
+            }
+            return render(request, 'rooms/registerRoom.html', context)
+
         context = {
-            'form' : form,
-            'errors' : getErrors[form]
+            'form': form,
+            'errors': getErrors[form]
         }
         return render(request, 'rooms/registerRoom.html', context)
 
@@ -128,3 +141,12 @@ class UpdateBuilding(View):
         }
         
         return render(request, 'rooms/buidings.html', context)
+    
+@method_decorator([logged_user_required, staff_user_required], name='dispatch')
+class UpdateRoom(View):
+    def post(self, request, id):
+        room = Room.objects.get(id=id)
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+        return redirect('registredRooms')

@@ -2,22 +2,129 @@
 {% load static %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/registredRooms.css' %}">
 {% endblock %}
 
 {% block body %}
-<div>
-    <a href="{% url 'registerRoom' %}">Cadastrar</a>
+{% include 'components/headerAdmin.html' %}
+
+<div class="titleSection">
+    <h2>Ações</h2>
+    <hr>
 </div>
-<div>
-    {% for room in rooms %}
-        <div>
-            <p>{{room}}</p>
-            <a href="{% url 'roomPage' id=room.id %}">Abrir</a>
-            <a href="{% url 'deleteRoom' id=room.id %}">Deletar</a>
+
+<div class="btn-container">
+    <a href="{% url 'registerRoom' %}" class="btn-card">
+        <span class="card-title">➕ Cadastrar nova sala</span>
+    </a>
+
+    <a href="{% url 'buildings' %}" class="btn-card">
+        <span class="card-title">➕ Cadastrar novo prédio</span>
+    </a>
+</div>
+
+<!-- Seção de Salas Cadastradas -->
+<div class="titleSection">
+    <h2>Salas Cadastradas</h2>
+    <hr>
+</div>
+
+<div class="rooms-list">
+    {% for item in rooms_with_forms %}
+    <div class="room-card">
+        <!-- Imagem da sala -->
+        <div class="room-image">
+            <img src="{% static 'images/cardSala.svg' %}" alt="Sala {{ item.room.name }}">
         </div>
+
+        <!-- Informações da sala -->
+        <div class="room-info">
+            <h3>{{ item.room.name }}</h3>
+            <p><strong>Capacidade:</strong> {{ item.room.idicatedLimit }} pessoas</p>
+            <p><strong>Localização:</strong> {{ item.room.fkBuilding.name }}</p>
+            <p><strong>Andar:</strong> {{ item.room.floor }}</p>
+        </div>
+
+        <!-- Botões de ação -->
+        <div class="room-actions">
+            <button class="btn-open" onclick="openModal('{{ item.room.id }}')">Editar</button>
+            <button class="btn-delete" onclick="openDeleteModal('{{ item.room.id }}')">Deletar</button>
+        </div>
+    </div>
+
+    <!-- Modal de edição -->
+    <div id="modal-{{ item.room.id }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('{{ item.room.id }}')">&times;</span>
+            <h3>Editar {{ item.room.name }}</h3>
+            <form method="post" action="{% url 'updateRoom' id=item.room.id %}" class="room-form">
+                {% csrf_token %}
+                {% for field in item.form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn-update">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de exclusão -->
+    <div id="delete-modal-{{ item.room.id }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal('{{ item.room.id }}')">&times;</span>
+            <h3>Confirmação de Exclusão</h3>
+            <p>Tem certeza que deseja excluir a sala <strong>{{ item.room.name }}</strong>?</p>
+            <div class="modal-actions">
+                <button onclick="confirmDelete('{{ item.room.id }}')" class="btn-confirm">Sim, deletar</button>
+                <button onclick="closeDeleteModal('{{ item.room.id }}')" class="btn-cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
-{% endblock %}
 
 {% block scripts %}
+<script>
+function openModal(id) {
+    document.getElementById('modal-' + id).style.display = 'block';
+}
+
+function closeModal(id) {
+    document.getElementById('modal-' + id).style.display = 'none';
+}
+
+// ----------------- Modal de exclusão -----------------
+function openDeleteModal(id) {
+    document.getElementById('delete-modal-' + id).style.display = 'block';
+}
+
+function closeDeleteModal(id) {
+    document.getElementById('delete-modal-' + id).style.display = 'none';
+}
+
+function confirmDelete(id) {
+    // Redireciona para a URL de exclusão
+    window.location.href = "{% url 'deleteRoom' id='ROOM_ID' %}".replace('ROOM_ID', id);
+}
+
+// Fecha modais ao clicar fora
+window.onclick = function(event) {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+}
+</script>
+{% endblock %}
 {% endblock %}

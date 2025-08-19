@@ -1,0 +1,354 @@
+/* =============================== */
+/* Reset e tipografia básica */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F5F7FA;
+    color: #1E3A8A;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+hr {
+    border: 0;
+    height: 2px;
+    background-color: #2563EB;
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+/* =============================== */
+/* Seções */
+.titleSection {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto 10px auto;
+}
+
+.btn-container,
+.rooms-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 auto 40px auto;
+    justify-content: center;
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* =============================== */
+/* Cards de ações */
+.btn-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    width: 250px;
+    border-radius: 12px;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.btn-card .card-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.btn-card:hover .card-image {
+    transform: scale(1.05);
+}
+
+.btn-card .card-title {
+    margin: 12px 0 20px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #2563EB;
+}
+/* =============================== */
+/* Cards de salas cadastradas */
+.room-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+/* Imagem da sala */
+.room-image img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.room-card:hover .room-image img {
+    transform: scale(1.05);
+}
+
+/* Informações da sala */
+.room-info {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+}
+
+.room-info h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.room-info p {
+    font-size: 0.95rem;
+    color: #1E3A8A;
+    margin: 2px 0;
+}
+
+/* Botões da sala */
+.room-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 20px 20px 20px;
+    gap: 10px;
+}
+
+.btn-open,
+.btn-delete {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-open {
+    background-color: #2563EB;
+}
+
+.btn-open:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background-color: #F87171;
+}
+
+.btn-delete:hover {
+    background-color: #DC2626;
+    transform: translateY(-2px);
+}
+
+/* =============================== */
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 30px 25px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-content h2,
+.modal-content h3 {
+    color: #2563EB;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Formulário do modal */
+.room-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.room-form label {
+    font-weight: 600;
+    color: #1e1e1e;
+    margin-bottom: 5px;
+}
+
+.room-form input,
+.room-form select,
+.room-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #D1D5DB;
+    outline: none;
+    font-size: 1rem;
+    background-color: #F3F4F6;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.room-form input:focus,
+.room-form select:focus,
+.room-form textarea:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+}
+
+.room-form .btn-update {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2563EB;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.room-form .btn-update:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+
+/* Botões do modal de exclusão */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions .btn-confirm {
+    background-color: #EF4444; /* vermelho para alertar exclusão */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-actions .btn-confirm:hover {
+    background-color: #B91C1C;
+}
+
+.modal-actions .btn-cancel {
+    background-color: #9CA3AF; /* cinza neutro para cancelar */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-actions .btn-cancel:hover {
+    background-color: #6B7280;
+}
+
+
+/* =============================== */
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* =============================== */
+/* Responsividade */
+@media (max-width: 768px) {
+    .btn-container,
+    .rooms-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-card,
+    .room-card {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin-top: 20%;
+    }
+
+    .room-form .btn-update {
+        width: 100%;
+    }
+}

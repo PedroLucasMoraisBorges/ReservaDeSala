@@ -2,39 +2,65 @@
 {% load static %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/userReserves.css' %}">
 {% endblock %}
 
 {% block body %}
-<div>
-    <p>Reservas ativas</p>
-    {% for reserve in userReserves.actives %}
-        <div>{{reserve}}</div>
-        <a href="{% url 'cancel_reserve' id=reserve.id %}">Cancelar</a>
-    {% endfor %}
-</div>
+{% include 'components/headerUser.html' %}
+<!-- ===================== -->
+<!-- Reservas Ativas -->
+<section class="active-reserves">
+    <p>Reservas Ativas</p>
+    {% if userReserves.actives %}
+        {% for reserve in userReserves.actives %}
+        <div class="reserve-card">
+            <span>{{ reserve.room.name }} - {{ reserve.date }} {{ reserve.time }}</span>
+            <a href="{% url 'cancel_reserve' id=reserve.id %}">Cancelar</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Não há reservas ativas.</p>
+    {% endif %}
+</section>
 
-<div>
-    <form>
-        <p>Pesquisar por salas</p>
+<!-- ===================== -->
+<!-- Formulário de Busca -->
+<section class="search-form">
+    <p>Pesquisar por Salas</p>
+    <form method="get">
         <input type="text" name="name" placeholder="Nome da sala">
-        <input type="number" name="limit" placeholder="25">
-        <input type="number" name="floor">
-
+        <input type="number" name="limit" placeholder="Quantidade ex: 25">
+        <input type="number" name="floor" placeholder="Qual andar?">
         <button type="submit">Buscar</button>
     </form>
-</div>
+</section>
 
-<div>
+<!-- ===================== -->
+<!-- Resultados de Salas -->
+<section class="rooms-results">
     {% if hasSearch and rooms|length == 0 %}
         <p>Nenhuma sala encontrada</p>
     {% endif %}
+
     {% for room in rooms %}
-        <div>
-            {{room}}
-            <a href="{% url 'room_detail' id=room.id %}">Ver Horários</a>
+    <div class="room-card">
+        <!-- Imagem da sala -->
+        <img src="{% static 'images/calendario.svg' %}" alt="Sala {{ room.name }}" class="room-image">
+
+        <!-- Informações da sala -->
+        <div class="room-info">
+            <h3>{{ room.name }}</h3>
+            <p><img src="{% static 'images/users.svg' %}" alt="" style="width:16px; vertical-align:middle;">{{ room.idicatedLimit }} pessoas</p>
+            <p><img src="{% static 'images/local.svg' %}" alt="" style="width:16px; vertical-align:middle;">{{ room.fkBuilding.name }} </p>
+            <p><img src="{% static 'images/aviso.svg' %}" alt="" style="width:16px; vertical-align:middle;">{{ room.floor }} Andar </p>
         </div>
+
+        <!-- Botão de ação -->
+        <a href="{% url 'room_detail' id=room.id %}">Ver Horários</a>
+    </div>
     {% endfor %}
-</div>
+</section>
+
 {% endblock %}
 
 {% block scripts %}

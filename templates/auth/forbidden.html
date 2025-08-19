@@ -1,11 +1,97 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Não Autorizado</title>
+    <style>
+        /* =============================== */
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body */
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+    color: #111;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Container da mensagem */
+.message-container {
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-width: 500px;
+    width: 100%;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Texto da mensagem */
+.message-container p {
+    font-size: 1.2rem;
+    color: #1e1e1e;
+    margin-bottom: 20px;
+}
+
+/* Link de volta */
+.message-container a {
+    width: 100%;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2563EB;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.message-container a:hover {
+    background-color: #062069;
+    transform: translateY(-2px);
+}
+
+/* Animação */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .message-container {
+        padding: 30px 20px;
+    }
+
+    .message-container p {
+        font-size: 1rem;
+    }
+
+    .message-container a {
+        font-size: 0.95rem;
+        padding: 8px 16px;
+    }
+}
+
+    </style>
 </head>
 <body>
-    <p>Você não tem autoriazação para essa página <a href="{% url 'redirect' %}">Voltar para home</a></p>
+    <div class="message-container">
+        <img src="{% static 'images/UniFAP-Marca.svg' %}" alt="logo">
+        <p>Você não tem autorização para acessar esta página!</p>
+        <a href="{% url 'redirect' %}">Voltar para o início</a>
+    </div>
 </body>
 </html>

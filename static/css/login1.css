@@ -1,0 +1,147 @@
+/* =============================== */
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body */
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+    color: #111;
+}
+
+/* Container do login */
+.login-container {
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* Logo */
+.logo-container {
+    margin-bottom: 30px;
+}
+
+.logo-container img {
+    width: 270px;
+    height: auto;
+}
+
+/* Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+form label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1E3A8A;
+}
+
+form input {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #D1D5DB;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+form input:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Botão de login */
+button {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2563EB;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+
+/* Link de registro */
+p {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #1E3A8A;
+}
+
+p a {
+    color: #3B82F6;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+p a:hover {
+    color: #1D4ED8;
+}
+
+/* Erros */
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px 0;
+    color: #DC2626;
+    font-size: 0.9rem;
+}
+
+.general-errors {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.field-errors {
+    margin-top: 5px;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+
+    form input {
+        font-size: 0.95rem;
+    }
+
+    button {
+        font-size: 0.95rem;
+    }
+}

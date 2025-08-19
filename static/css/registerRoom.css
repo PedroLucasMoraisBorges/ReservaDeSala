@@ -1,0 +1,104 @@
+/* Container do formulário */
+.form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+/* Cabeçalho do form */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    color: #1E3A8A;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.link-secondary {
+    text-decoration: none;
+    color: #2563EB;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.link-secondary:hover {
+    color: #1D4ED8;
+}
+
+/* Inputs */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #1E3A8A;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #D1D5DB;
+    font-size: 1rem;
+    outline: none;
+    background-color: #F3F4F6;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+}
+
+/* Erros do Django */
+.errorlist {
+    color: #F87171;
+    margin-top: 5px;
+    list-style: none;
+    font-size: 0.9rem;
+}
+
+/* Botão de submit */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2563EB;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #1D4ED8;
+    transform: translateY(-2px);
+}
+/* Mensagem de sucesso */
+.success-message {
+    background-color: #DCFCE7; /* verde claro */
+    color: #166534;            /* verde escuro */
+    border: 1px solid #4ADE80; /* contorno verde */
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}

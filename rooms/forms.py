@@ -35,7 +35,7 @@ class RoomForm(forms.ModelForm):
 class BuildingForm(forms.ModelForm):
     name = forms.CharField(
         required=True,
-        label="Nome da Sala",
+        label="Nome do Local",
         widget= forms.TextInput(attrs={})
     )
 

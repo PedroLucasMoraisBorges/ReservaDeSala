@@ -1,0 +1,159 @@
+{% load static %}
+
+<style>
+/* Header */
+.site-header {
+    background: #1E3A8A;
+    color: #fff;
+    padding: 12px 0px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* distribui logo e nav */
+    margin: 0 2rem;
+    flex-wrap: wrap;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.logo span {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Navegação padrão (desktop) */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #93C5FD;
+}
+
+/* Usuário */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-menu span {
+    font-size: 0.95rem;
+}
+
+.btn-logout {
+    background: #2563EB;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-logout:hover {
+    background: #1D4ED8;
+}
+
+/* Botão menu hambúrguer (esconde no desktop) */
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* --- RESPONSIVO --- */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 65px;
+        right: 0;
+        background: #1E3A8A;
+        width: 200px;
+        padding: 15px;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 10px 0;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .user-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+        gap: 10px;
+    }
+}
+
+
+</style>
+
+{% load static %}
+<header class="site-header">
+    <div class="container">
+        <a href="{% url 'registredRooms' %}" class="btn-back" style="color: white; font-weight: 400; transition: color 0.3s; text-decoration: none;" >← Voltar</a>
+        <!-- Logo -->
+        <div class="logo">
+            <img src="{% static 'images/unifapBranca.png' %}" alt="logo UNIFAP">
+            <span>Sistema de Reserva de Salas</span>
+        </div>
+
+        <!-- Botão menu hambúrguer (visível apenas no mobile) -->
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+
+        <!-- Navegação -->
+        <nav class="nav-links" id="nav-links">
+            <a href="{}">Início</a>
+            <a href="{}">Cadastrar Sala</a>
+            <a href="">Cadastrar Prédio</a>
+            <a href="">Relatórios</a>
+            <div class="user-menu">
+                <span>Olá, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<script>
+    // Script simples para abrir/fechar o menu no mobile
+    document.getElementById("menu-toggle").addEventListener("click", function() {
+        document.getElementById("nav-links").classList.toggle("active");
+    });
+</script>

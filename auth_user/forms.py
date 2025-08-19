@@ -12,12 +12,12 @@ UserModel = get_user_model()
 class AuthenticationForm(forms.Form):
     username = forms.EmailField(
         required=True,
-        label="Email", 
-        widget=forms.TextInput(attrs={"autofocus": True, 'placeholder': 'voce.empresa@gmail.com', 'id' : 'email'})
+        label="E-mail", 
+        widget=forms.TextInput(attrs={"autofocus": True, 'placeholder': 'seuemail@aluno.unifapce.edu.br', 'id' : 'email'})
     )
     
     password = forms.CharField(
-        label="Password",
+        label="Senha",
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password", 'placeholder': '********', 'id' : 'senha'}),
     )
@@ -91,10 +91,10 @@ class AuthenticationForm(forms.Form):
 class CustomUserCreationForm(UserCreationForm):
     name = forms.CharField(
         required=True,
-        label='Nome completo',
+        label='Nome',
         widget = forms.TextInput(
             attrs={
-                'placeholder': 'Seu nome',
+                'placeholder': 'Seu nome completo',
                 'id' : 'nome'
             }
         )
@@ -105,7 +105,7 @@ class CustomUserCreationForm(UserCreationForm):
         label='Email',
         widget = forms.TextInput(
             attrs={
-                'placeholder': 'voce.empresa@gmail.com',
+                'placeholder': 'seuemail@aluno.unifapce.edu.br',
                 'id' : 'email'
             }
         )

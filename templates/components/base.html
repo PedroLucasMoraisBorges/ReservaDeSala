@@ -1,5 +1,12 @@
 {% load static %}
-
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+</style>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,9 +17,6 @@
     {% endblock %}
 </head>
 <body>
-    <div>
-        <a href="{% url 'logout' %}">Sair</a>
-    </div>
     {% block body %}
     {% endblock %}
 

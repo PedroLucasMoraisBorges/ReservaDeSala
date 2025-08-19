@@ -1,18 +1,54 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="ptbr">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login1.css' %}">
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div>{{field}}</div>
-        {% endfor %}
-        
-        <button type="submit">Logar</button>
-    </form>
+     <div class="login-container">
+        <div class="logo-container">
+            <img src="{% static 'images/UniFAP-Marca.svg' %}" alt="logo">
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Erros gerais do formulário (ex: usuário ou senha inválidos) -->
+            {% if form.non_field_errors %}
+                <ul class="errorlist general-errors">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- Campos do formulário -->
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist field-errors">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit">Fazer Login</button>
+        </form>
+
+        <br>
+        <!-- Link para registro -->
+        <p>
+            Não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a>
+        </p>
+    </div>
 </body>
 </html>

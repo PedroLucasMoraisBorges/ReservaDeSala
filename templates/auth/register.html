@@ -1,18 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="ptbr">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Cadastro - UNIFAP</title>
+    <link rel="stylesheet" href="{% static 'css/login1.css' %}">
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div>{{field}}</div>
-        {% endfor %}
-        
-        <button type="submit">Cadastrar</button>
-    </form>
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="{% static 'images/UniFAP-Marca.svg' %}" alt="logo UNIFAP">
+        </div>
+        <h1>Cadastro</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit">Cadastrar</button>
+        </form>
+        <br>
+        <!-- Link para login -->
+        <p>
+            Já tem uma conta? <a href="{% url 'login' %}">Fazer login</a>
+        </p>
+    </div>
 </body>
 </html>

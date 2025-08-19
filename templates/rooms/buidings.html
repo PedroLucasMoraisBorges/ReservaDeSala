@@ -2,36 +2,94 @@
 {% load static %}
 
 {% block head %}
+<link rel="stylesheet" href="{% static 'css/building.css' %}">
 {% endblock %}
 
 {% block body %}
-<form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-        {{field}}
-    {% endfor %}
+{% include 'components/headerAdmin.html' %}
 
-    <button type="submit">Cadastrar</button>
-</form>
+<div class="form-container">
+    <h2>Adicionar Prédio</h2>
+    <form method="post" class="building-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">Cadastrar</button>
+    </form>
+</div>
 
-<div>
-    {% for buildind in buildings %}
-        <div>
-            <div>{{buildind.info}}</div>
-            <a href="{% url 'deleteBuilging' id=buildind.info.id %}">Deletar</a>
+<div class="titleSection">
+    <h2>Locais cadastrados</h2>
+    <hr>
+</div>
 
-            <form method="post" action="{% url 'updateBuilding' id=buildind.info.id %}">
-                {% csrf_token %}
-                {% for field in buildind.form %}
-                    {{field}}
-                {% endfor %}
-
-                <button type="submit">Salvar</button>
-            </form>
+<div class="building-list">
+    {% for building in buildings %}
+    <div class="building-card">
+        <div class="building-info">
+            <p>{{ building.info }}</p>
         </div>
+        <hr>
+        <div class="building-actions">
+            <form method="post" action="{% url 'updateBuilding' id=building.info.id %}" class="update-form">
+                {% csrf_token %}
+                {% for field in building.form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn-update">Salvar</button>
+            </form>
+            <!-- Botão de deletar abre o modal -->
+            <button type="button" class="btn-delete" onclick="openDeleteModal('{{ building.info.id }}')">Deletar</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação de exclusão -->
+    <div id="delete-modal-{{ building.info.id }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal('{{ building.info.id }}')">&times;</span>
+            <h3>Tem certeza que deseja excluir o prédio {{ building.info }}?</h3>
+            <div class="modal-actions">
+                <a href="{% url 'deleteBuilging' id=building.info.id %}" class="btn-confirm">Confirmar</a>
+                <button type="button" class="btn-cancel" onclick="closeDeleteModal('{{ building.info.id }}')">Cancelar</button>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
-{% endblock %}
 
 {% block scripts %}
+<script>
+function openDeleteModal(id) {
+    document.getElementById('delete-modal-' + id).style.display = 'flex';
+}
+
+function closeDeleteModal(id) {
+    document.getElementById('delete-modal-' + id).style.display = 'none';
+}
+
+// Fechar modal clicando fora
+window.onclick = function(event) {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+}
+</script>
+{% endblock %}
 {% endblock %}
