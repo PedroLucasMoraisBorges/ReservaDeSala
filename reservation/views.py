@@ -6,6 +6,8 @@ from .models import *
 from .utils import *
 from auth_user.decorators import *
 
+from rest_framework.views import APIView
+
 
 
 import json
@@ -15,7 +17,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db import transaction
-from django.core import serializers # <-- IMPORTE O SERIALIZADOR
+from django.core import serializers
 
 from .models import Room, Schedule, Reserve, User
 
@@ -36,7 +38,6 @@ class UserReserves(View):
 
 @method_decorator([logged_user_required], name='dispatch')
 class RoomDetailView(View):
-    @logged_user_required
     def get(self, request, id):
         room = get_object_or_404(Room, id=id)
         
@@ -54,9 +55,11 @@ class RoomDetailView(View):
         return render(request, 'reservations/roomDetail.html', context)
 
 # API para obter os horários já reservados em um dia específico
-logged_user_required
-def get_reserved_schedules(request, room_id):
-    if request.method == 'GET':
+
+# API para obter os horários já reservados em um dia específico
+@method_decorator([logged_user_required], name='dispatch')
+class GetReservedSchedules(APIView):
+    def get(self, request, room_id):
         date_str = request.GET.get('date')
         if not date_str:
             return JsonResponse({'error': 'Date parameter is missing'}, status=400)
@@ -71,8 +74,6 @@ def get_reserved_schedules(request, room_id):
                 reserved_schedule_ids.append(schedule.id)
         
         return JsonResponse({'reserved_ids': reserved_schedule_ids})
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
-
 
 # API para criar uma nova reserva
 # Usamos @login_required para garantir que apenas usuários logados possam reservar
