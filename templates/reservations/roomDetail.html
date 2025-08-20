@@ -154,7 +154,7 @@
 
                     try {
                         // Faz uma chamada à API para buscar horários reservados
-                        const response = await fetch(`/api/room/${roomId}/reserved_schedules/?date=${clickedDate}`);
+                        const response = await fetch(`/api/getReservedSchedules/${roomId}/reserved_schedules/?date=${clickedDate}`);
                         if (!response.ok) throw new Error('Falha ao buscar horários.');
                         
                         const data = await response.json();
@@ -196,6 +196,7 @@
 
                     } catch (error) {
                         console.error('Erro:', error);
+                        console.log('jjj')
                         alert('Não foi possível carregar os horários. Tente novamente.');
                     }
                 }

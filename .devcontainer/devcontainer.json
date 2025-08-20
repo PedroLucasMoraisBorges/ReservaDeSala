@@ -1,0 +1,30 @@
+{
+  "name": "Django Dev Container",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../compose.override.yml"
+  ],
+  "service": "django-web",
+  "workspaceFolder": "/app",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.analysis.autoImportCompletions": true,
+        "python.analysis.extraPaths": [
+          "/usr/local/lib/python3.13/site-packages"
+        ]
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "batisteo.vscode-django",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+
+  "postCreateCommand": "pip install --upgrade pip",
+  "remoteUser": "appuser"
+}
