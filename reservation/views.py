@@ -126,7 +126,6 @@ def create_reservation(request):
 
 @method_decorator([logged_user_required], name='dispatch')
 class CacelReserve(View):
-    @logged_user_required
     def get(self, request, id):
         reservation = Reserve.objects.get(id=id)
         reservation.status = 1
