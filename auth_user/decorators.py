@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from .models import *
 from functools import wraps
-
+from django.http import JsonResponse
 
 def logged_user_required(view_func):
     @wraps(view_func)
@@ -28,5 +28,13 @@ def staff_user_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_staff:
             return redirect('forbidden')
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+def logged_api_user_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Usuário não encontrado'}, status=401)
         return view_func(request, *args, **kwargs)
     return wrapper

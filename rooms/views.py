@@ -42,13 +42,13 @@ class RegisterRoom(View):
     def post(self, request):
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Retorna à mesma página com mensagem de sucesso
+            room = form.save()
             context = {
                 'form': RoomForm(),
                 'success': True
             }
-            return render(request, 'rooms/registerRoom.html', context)
+
+            return redirect('roomPage', id=room.id)
 
         context = {
             'form': form,
