@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 import json
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db import transaction
@@ -57,31 +57,28 @@ class RoomDetailView(View):
 # API para obter os horários já reservados em um dia específico
 
 # API para obter os horários já reservados em um dia específico
-@method_decorator([logged_user_required], name='dispatch')
+@method_decorator([logged_api_user_required], name='dispatch')
 class GetReservedSchedules(APIView):
     def get(self, request, room_id):
         date_str = request.GET.get('date')
         if not date_str:
             return JsonResponse({'error': 'Date parameter is missing'}, status=400)
 
-        # Encontra todas as reservas para a sala e data especificadas
         reservations = Reserve.objects.filter(fkRoom_id=room_id, dtReserve=date_str, status=0)
         
-        # Coleta os IDs de todos os horários (schedules) que já estão reservados
         reserved_schedule_ids = []
         for reserve in reservations:
             for schedule in reserve.schedules.all():
                 reserved_schedule_ids.append(schedule.id)
-        
+
         return JsonResponse({'reserved_ids': reserved_schedule_ids})
 
-# API para criar uma nova reserva
-# Usamos @login_required para garantir que apenas usuários logados possam reservar
-logged_user_required
-def create_reservation(request):
-    if request.method == 'POST':
+
+@method_decorator([logged_api_user_required], name='dispatch')
+class CreateReservation(APIView):
+    def post(self, request):
         try:
-            data = json.loads(request.body)
+            data = request.data
             room_id = data.get('room_id')
             date = data.get('date')
             schedule_ids = data.get('schedule_ids')
@@ -114,21 +111,24 @@ def create_reservation(request):
                 new_reserve.schedules.set(schedules_to_add)
                 new_reserve.save()
 
-            return JsonResponse({'success': 'Reserva criada com sucesso!'})
+            return JsonResponse({'success': 'Reserva criada com sucesso!'}, status=201)
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'JSON inválido.'}, status=400)
         except Exception as e:
-            # Log do erro é uma boa prática
             return JsonResponse({'error': 'Ocorreu um erro interno.'}, status=500)
-
-    return JsonResponse({'error': 'Método inválido.'}, status=405)
 
 @method_decorator([logged_user_required], name='dispatch')
 class CacelReserve(View):
     def get(self, request, id):
         reservation = Reserve.objects.get(id=id)
+
+        if reservation.fkUser != request.user:
+            return HttpResponseForbidden("Você não pode cancelar esta reserva.")
+        
         reservation.status = 1
         reservation.save()
+
+
 
         return redirect('userReserves')

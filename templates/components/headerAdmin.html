@@ -127,9 +127,10 @@
 {% load static %}
 <header class="site-header">
     <div class="container">
-        <a href="{% url 'registredRooms' %}" class="btn-back" style="color: white; font-weight: 400; transition: color 0.3s; text-decoration: none;" >← Voltar</a>
+        
         <!-- Logo -->
         <div class="logo">
+            <a href="" class="btn-back" style="display: none; color: white; font-weight: 400; transition: color 0.3s; text-decoration: none;">← Voltar</a>
             <img src="{% static 'images/unifapBranca.png' %}" alt="logo UNIFAP">
             <span>Sistema de Reserva de Salas</span>
         </div>
@@ -139,12 +140,12 @@
 
         <!-- Navegação -->
         <nav class="nav-links" id="nav-links">
-            <a href="{}">Início</a>
-            <a href="{}">Cadastrar Sala</a>
-            <a href="">Cadastrar Prédio</a>
+            <a href="{% url 'registredRooms' %}">Início</a>
+            <a href="{% url 'registerRoom' %}">Cadastrar Sala</a>
+            <a href="{% url 'buildings' %}">Cadastrar Prédio</a>
             <a href="">Relatórios</a>
             <div class="user-menu">
-                <span>Olá, {{ user.username }}</span>
+                <span>Olá, {{ user.name }}</span>
                 <a href="{% url 'logout' %}" class="btn-logout">Sair</a>
             </div>
         </nav>
@@ -152,8 +153,19 @@
 </header>
 
 <script>
-    // Script simples para abrir/fechar o menu no mobile
     document.getElementById("menu-toggle").addEventListener("click", function() {
         document.getElementById("nav-links").classList.toggle("active");
     });
+
+    const btnBack = document.querySelector(".btn-back");
+    const referrer = document.referrer;
+
+
+    if (referrer.includes("http://localhost:8000")) {
+        btnBack.style.display = "inline";
+        btnBack.addEventListener("click", function(e) {
+            e.preventDefault();
+            history.back();
+        });
+    }
 </script>

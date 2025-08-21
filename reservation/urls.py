@@ -9,6 +9,6 @@ urlpatterns = [
     path('api/getReservedSchedules/<uuid:room_id>/reserved_schedules/', GetReservedSchedules.as_view(), name='get_reserved_schedules'),
     
     # Rota da API para criar uma reserva
-    path('api/reserve/create/', create_reservation, name='create_reservation'),
+    path('api/reserve/create/', CreateReservation.as_view(), name='create_reservation'),
     path('cancelarReserva/<uuid:id>', CacelReserve.as_view(), name='cancel_reserve')
 ]
